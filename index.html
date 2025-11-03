@@ -360,31 +360,6 @@
 </section>
 <!-- End paper abstract -->
 
-<!-- Key Findings Section -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Key Findings</h2>
-      <div class="content">
-        <div class="columns">
-          <div class="column">
-            <h3 class="title is-5">🔄 Three Geometric Phases</h3>
-            <p>LLM pretraining follows a non-monotonic trajectory through warmup, entropy-seeking, and compression-seeking phases, each with distinct geometric signatures.</p>
-          </div>
-          <div class="column">
-            <h3 class="title is-5">📊 Spectral Analysis Reveals Structure</h3>
-            <p>RankMe and α-ReQ metrics capture representation geometry changes that traditional loss metrics cannot explain.</p>
-          </div>
-          <div class="column">
-            <h3 class="title is-5">🎯 Performance Emerges Late</h3>
-            <p>Significant improvement in downstream tasks occurs during the compression-seeking phase, after dimensionality expansion.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Method Overview -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
@@ -392,6 +367,9 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Method</h2>
         <div class="content has-text-justified">
+          <p>
+            We primarily consider the final layer, last token activations as the representations for a given input sequence and study the geometry of the corresponding manifold. To analyze the intrinsic geometry of the manifold, we compute the feature covariance matrix.
+          </p>
           <p>
             We analyze the representation geometry of language models during training using two complementary spectral metrics:
           </p>
@@ -405,6 +383,122 @@
         </div>
       </div>
     </div>
+    <!-- Method Figure 1 -->
+    <div class="columns is-centered has-text-centered" style="margin-top: 30px;">
+      <div class="column is-four-fifths">
+        <img src="static/images/figure1.jpeg" alt="Method visualization" style="max-width:100%; margin: 20px auto;">
+        <p class="subtitle"><strong>Figure 1:</strong> Spectral framework reveals three universal phases in LLM training. (A) LLM representations analyzed via empirical feature covariance Σ̂(f<sub>θ</sub>) of last-token hidden states f<sub>θ</sub>(x<sub>i</sub>). (B) Two complementary spectral metrics: α-ReQ measures eigenspectrum decay rate (variance concentration), while RankMe quantifies effective rank (utilized dimensionality).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Key Findings Section -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Key Findings</h2>
+      
+      <!-- Finding 1: Three Geometric Phases -->
+      <div class="content" style="margin-bottom: 50px;">
+        <h3 class="title is-4">🔄 Three Geometric Phases</h3>
+        <div class="content has-text-justified">
+          <p>
+            We find that while the pretraining loss decreases monotonically, the spectral changes are non-monotonic! In particular, we find that LLMs undergo 3 distinct phases during pretraining:
+          </p>
+          <ul>
+            <li><strong>Warmup:</strong> Rapid compression which collapses representation to dominant directions</li>
+            <li><strong>Entropy-seeking:</strong> Manifold expansion, adding information in non-dominant directions</li>
+            <li><strong>Compression-seeking:</strong> Anisotropic consolidation, selectively packing more information in dominant directions</li>
+          </ul>
+        </div>
+        <div class="content has-text-centered" style="margin-top: 30px;">
+          <img src="static/images/figure2.jpeg" alt="Three geometric phases" style="max-width:90%; margin: 20px auto;">
+          <p class="subtitle"><strong>Figure 2:</strong> Non-monotonic spectral changes across three distinct geometric phases during pretraining.</p>
+        </div>
+      </div>
+
+      <!-- Finding 2: Memorization vs Generalization -->
+      <div class="content" style="margin-bottom: 50px;">
+        <h3 class="title is-4">📊 Memorization vs Generalization Across Phases</h3>
+        <div class="content has-text-justified">
+          <p>
+            Does the representation complexity inform us about changes in LLM behavior? To understand this better, we investigate LLM behavior from the lens of memorization vs generalization across the different phases.
+          </p>
+          <p>
+            Strikingly, we find that the model uses characteristically different mechanisms as it optimizes the next-token prediction objective:
+          </p>
+          <ul>
+            <li><strong>Entropy-seeking phase:</strong> Correlates with short-sequence memorization, as measured using n-gram alignment</li>
+            <li><strong>Compression-seeking phase:</strong> Correlates with dramatic gains in factual reasoning requiring long-range dependencies (e.g., TriviaQA)</li>
+          </ul>
+        </div>
+        <div class="content has-text-centered" style="margin-top: 30px;">
+          <img src="static/images/figure3.jpeg" alt="Memorization vs generalization" style="max-width:90%; margin: 20px auto;">
+          <p class="subtitle"><strong>Figure 3:</strong> Different phases correlate with distinct behavioral patterns: memorization in entropy-seeking phase and generalization in compression-seeking phase.</p>
+        </div>
+      </div>
+
+      <!-- Finding 3: Post-training -->
+      <div class="content" style="margin-bottom: 50px;">
+        <h3 class="title is-4">🎯 Post-training: SFT/DPO vs RLVR</h3>
+        <div class="content has-text-justified">
+          <p>
+            Post training: we find key differences between SFT/DPO and RLVR:
+          </p>
+          <ul>
+            <li><strong>SFT & DPO</strong> exhibit entropy-seeking expansion, favoring instruction memorization but reducing OOD robustness</li>
+            <li><strong>RLVR</strong> exhibits compression-seeking consolidation, learning reward-aligned behaviors at the cost of reduced exploration</li>
+          </ul>
+          <p>
+            We believe this rank-consolidation helps explain why base models can recover better performance at high pass@K compared to RLVR-tuned models.
+          </p>
+        </div>
+        <div class="content has-text-centered" style="margin-top: 30px;">
+          <img src="static/images/figure4.jpeg" alt="Post-training comparison" style="max-width:90%; margin: 20px auto;">
+          <p class="subtitle"><strong>Figure 4:</strong> Contrasting geometric changes in SFT/DPO (entropy-seeking) versus RLVR (compression-seeking) post-training.</p>
+        </div>
+      </div>
+
+      <!-- Finding 4: Why do these phases arise? -->
+      <div class="content" style="margin-bottom: 50px;">
+        <h3 class="title is-4">🔬 Why Do These Geometric Phases Arise?</h3>
+        <div class="content has-text-justified">
+          <p>
+            We show, both analytically and with simulations in a toy model, that gradient descent dynamics with cross-entropy loss, coupled with skewed token frequencies and representation bottlenecks, are the key reasons underlying these non-monotonic spectral changes.
+          </p>
+        </div>
+        <div class="content has-text-centered" style="margin-top: 30px;">
+          <img src="static/images/figure5.gif" alt="Toy model simulation" style="max-width:90%; margin: 20px auto;">
+          <p class="subtitle"><strong>Figure 5:</strong> Toy model simulations showing how gradient descent dynamics lead to non-monotonic spectral changes.</p>
+        </div>
+      </div>
+
+      <!-- Finding 5: Task-relevant information in eigendirections -->
+      <div class="content" style="margin-bottom: 50px;">
+        <h3 class="title is-4">💡 Task-Relevant Information in Spectral Tail</h3>
+        <div class="content has-text-justified">
+          <p>
+            Is task-relevant info contained in the top eigendirections? To understand this we project the activations to a top-K / bottom-K subspaces and measure performance on standard benchmarks.
+          </p>
+          <p>
+            Surprisingly, we find that in line with our theoretical results, the spectral tail encodes critical task-relevant information, while the dominant directions are expendable for many tasks!
+          </p>
+          <p>
+            In particular, on SciQ:
+          </p>
+          <ul>
+            <li>Removing top 50 directions barely hurts accuracy</li>
+            <li>Retaining only top 50 directions collapses performance</li>
+          </ul>
+        </div>
+        <div class="content has-text-centered" style="margin-top: 30px;">
+          <img src="static/images/figure6.png" alt="Eigendirection analysis" style="max-width:90%; margin: 20px auto;">
+          <p class="subtitle"><strong>Figure 6:</strong> Task-relevant information is concentrated in the spectral tail rather than dominant eigendirections.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -412,47 +506,7 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
-      <h2 class="title is-3 has-text-centered">Results</h2>
-      
-      <!-- Figure 1 -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure1.jpeg" alt="Result Figure 1" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 1: [Add your caption here]</p>
-      </div>
-      
-      <!-- Figure 2 -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure2.jpeg" alt="Result Figure 2" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 2: [Add your caption here]</p>
-      </div>
-      
-      <!-- Figure 3 -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure3.jpeg" alt="Result Figure 3" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 3: [Add your caption here]</p>
-      </div>
-      
-      <!-- Figure 4 -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure4.jpeg" alt="Result Figure 4" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 4: [Add your caption here]</p>
-      </div>
-      
-      <!-- Figure 5 (GIF) -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure5.gif" alt="Result Figure 5 - Animation" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 5: [Add your caption here]</p>
-      </div>
-      
-      <!-- Figure 6 -->
-      <div class="content has-text-centered" style="margin-bottom: 40px;">
-        <img src="static/images/figure6.png" alt="Result Figure 6" style="max-width:90%; margin: 20px auto;">
-        <p class="subtitle">Figure 6: [Add your caption here]</p>
-      </div>
-      
-    </div>
-  </div>
-</section>
+      <h2 class="title is-3 has-text-centered">Additional Results</h2>
 
 <!-- Video presentation (if available) -->
 <!-- Uncomment and update when you have a video
