@@ -356,6 +356,22 @@
       color: var(--text-primary);
     }
     
+    /* Phase coloring */
+    .phase-warmup {
+      color: #888888;
+      font-weight: 600;
+    }
+    
+    .phase-entropy {
+      color: #dc3545;
+      font-weight: 600;
+    }
+    
+    .phase-compression {
+      color: #2563eb;
+      font-weight: 600;
+    }
+    
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
       .sticky-nav .nav-title {
@@ -602,7 +618,7 @@
       <!-- Replace with your teaser figure/video -->
       <img src="static/images/figure0.jpg" alt="Three geometric phases of LLM pretraining" class="clickable-figure" onclick="openLightbox(this.src)" style="width:100%">
       <h2 class="subtitle has-text-centered">
-        We discover three distinct geometric phases during language model pretraining: warmup (representational collapse), entropy-seeking (dimensionality expansion with peak n-gram memorization), and compression-seeking (anisotropic consolidation leading to improved downstream performance).
+        We discover three distinct geometric phases during language model pretraining: <span class="phase-warmup">warmup</span> (representational collapse), <span class="phase-entropy">entropy-seeking</span> (dimensionality expansion with peak n-gram memorization), and <span class="phase-compression">compression-seeking</span> (anisotropic consolidation leading to improved downstream performance).
       </h2>
     </div>
   </div>
@@ -688,14 +704,14 @@
             We find that while the pretraining loss decreases monotonically, the spectral changes are non-monotonic! In particular, we find that LLMs undergo 3 distinct phases during pretraining:
           </p>
           <ul>
-            <li><strong>Warmup:</strong> Rapid compression which collapses representation to dominant directions</li>
-            <li><strong>Entropy-seeking:</strong> Manifold expansion, adding information in non-dominant directions</li>
-            <li><strong>Compression-seeking:</strong> Anisotropic consolidation, selectively packing more information in dominant directions</li>
+            <li><strong><span class="phase-warmup">Warmup:</span></strong> Rapid compression which collapses representation to dominant directions</li>
+            <li><strong><span class="phase-entropy">Entropy-seeking:</span></strong> Manifold expansion, adding information in non-dominant directions</li>
+            <li><strong><span class="phase-compression">Compression-seeking:</span></strong> Anisotropic consolidation, selectively packing more information in dominant directions</li>
           </ul>
         </div>
         <div class="content has-text-centered" style="margin-top: 30px;">
           <img src="static/images/figure2.jpeg" alt="Three geometric phases" class="clickable-figure" onclick="openLightbox(this.src)" style="max-width:90%; margin: 20px auto;">
-          <p class="subtitle"><strong>Figure 2:</strong> Loss decreases monotonically, but representation geometry does not. (A) Schematic from Fig 1, for the pretraining stage. (B) Cross-entropy loss, gradient norm and learning rate schedule during OLMo-2 7B model pretraining. (C, D) RankMe and α-ReQ, respectively, for OLMo-2 7B model vary non-monotonically across pretraining, demonstrating three key phases: "warmup", "entropy-seeking", and "compression-seeking". (E, F) Same as C,D, but for Pythia models, demonstrating the consistent existence of the three phases across model families and scales.</p>
+          <p class="subtitle"><strong>Figure 2:</strong> Loss decreases monotonically, but representation geometry does not. (A) Schematic from Fig 1, for the pretraining stage. (B) Cross-entropy loss, gradient norm and learning rate schedule during OLMo-2 7B model pretraining. (C, D) RankMe and α-ReQ, respectively, for OLMo-2 7B model vary non-monotonically across pretraining, demonstrating three key phases: <span class="phase-warmup">"warmup"</span>, <span class="phase-entropy">"entropy-seeking"</span>, and <span class="phase-compression">"compression-seeking"</span>. (E, F) Same as C,D, but for Pythia models, demonstrating the consistent existence of the three phases across model families and scales.</p>
         </div>
       </div>
 
@@ -710,13 +726,13 @@
             Strikingly, we find that the model uses characteristically different mechanisms as it optimizes the next-token prediction objective:
           </p>
           <ul>
-            <li><strong>Entropy-seeking phase:</strong> Correlates with short-sequence memorization, as measured using n-gram alignment</li>
-            <li><strong>Compression-seeking phase:</strong> Correlates with dramatic gains in factual reasoning requiring long-range dependencies (e.g., TriviaQA)</li>
+            <li><strong><span class="phase-entropy">Entropy-seeking phase:</span></strong> Correlates with short-sequence memorization, as measured using n-gram alignment</li>
+            <li><strong><span class="phase-compression">Compression-seeking phase:</span></strong> Correlates with dramatic gains in factual reasoning requiring long-range dependencies (e.g., TriviaQA)</li>
           </ul>
         </div>
         <div class="content has-text-centered" style="margin-top: 30px;">
           <img src="static/images/figure3.jpeg" alt="Memorization vs generalization" class="clickable-figure" onclick="openLightbox(this.src)" style="max-width:90%; margin: 20px auto;">
-          <p class="subtitle"><strong>Figure 3:</strong> Distinct learning phases are linked to different LLM capabilities. (A) Memorization metric, i.e. spearman correlation between LLM and ∞-gram outputs, and representation geometry metric, α-ReQ, across Pythia models' (1–12B parameters) pretraining. Memorization peaks late in the "entropy-seeking" phase before plateauing or degrading slightly in the "compression-seeking" phase, suggesting that the former prioritizes capturing short-context n-gram statistics. (B) 0-shot performance on multiple-choice (SciQ) and factual question-answering (TriviaQA) tasks across pretraining. While accuracy on SciQ benefits from learning in both phases, accuracy on TriviaQA groks once the model learns long-context statistics, primarily in the "compression-seeking" phase.</p>
+          <p class="subtitle"><strong>Figure 3:</strong> Distinct learning phases are linked to different LLM capabilities. (A) Memorization metric, i.e. spearman correlation between LLM and ∞-gram outputs, and representation geometry metric, α-ReQ, across Pythia models' (1–12B parameters) pretraining. Memorization peaks late in the <span class="phase-entropy">"entropy-seeking"</span> phase before plateauing or degrading slightly in the <span class="phase-compression">"compression-seeking"</span> phase, suggesting that the former prioritizes capturing short-context n-gram statistics. (B) 0-shot performance on multiple-choice (SciQ) and factual question-answering (TriviaQA) tasks across pretraining. While accuracy on SciQ benefits from learning in both phases, accuracy on TriviaQA groks once the model learns long-context statistics, primarily in the <span class="phase-compression">"compression-seeking"</span> phase.</p>
         </div>
       </div>
 
@@ -751,7 +767,7 @@
         </div>
         <div class="content has-text-centered" style="margin-top: 30px;">
           <img src="static/images/figure5.gif" alt="Toy model simulation" class="clickable-figure" onclick="openLightbox(this.src)" style="max-width:90%; margin: 20px auto;">
-          <p class="subtitle"><strong>Figure 5:</strong> Learning dynamics of cross-entropy loss replicate multiphase learning dynamics. (A) Schematic of a model with feature extractor f<sub>θ</sub> (∈ R<sup>d</sup>), linear classifier W (∈ R<sup>n×d</sup>) and cross-entropy loss ℒ<sub>CE</sub>. Skewed class distribution and information bottleneck (d < n) are critical to replicate all three phases observed in LLM pretraining. (B, C) Classifier weights (W<sub>i</sub>) and feature representations (f<sub>θ</sub>(x)) demonstrate distinctive trajectories analogous to "warmup" (dotted), "entropy-seeking" (solid), and "compression-seeking" (dashed) phases. (D) Quantitative spectral metrics RankMe and eigenvalues, σ<sub>1</sub>, σ<sub>2</sub>.</p>
+          <p class="subtitle"><strong>Figure 5:</strong> Learning dynamics of cross-entropy loss replicate multiphase learning dynamics. (A) Schematic of a model with feature extractor f<sub>θ</sub> (∈ R<sup>d</sup>), linear classifier W (∈ R<sup>n×d</sup>) and cross-entropy loss ℒ<sub>CE</sub>. Skewed class distribution and information bottleneck (d < n) are critical to replicate all three phases observed in LLM pretraining. (B, C) Classifier weights (W<sub>i</sub>) and feature representations (f<sub>θ</sub>(x)) demonstrate distinctive trajectories analogous to <span class="phase-warmup">"warmup"</span> (dotted), <span class="phase-entropy">"entropy-seeking"</span> (solid), and <span class="phase-compression">"compression-seeking"</span> (dashed) phases. (D) Quantitative spectral metrics RankMe and eigenvalues, σ<sub>1</sub>, σ<sub>2</sub>.</p>
         </div>
       </div>
 
